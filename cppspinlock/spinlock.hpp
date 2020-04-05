@@ -14,5 +14,5 @@ public:
   bool try_lock();
 
 private:
-  std::atomic<bool> lock_;
+  std::atomic_flag lock_;
 };

@@ -7,20 +7,18 @@
 /*
  * Test-And-Set spinlock
  */
-typedef atomic_bool spinlock_t;
-
-void spinlock_init(spinlock_t *spinlock) { *spinlock = false; }
+typedef atomic_flag spinlock_t;
 
 void spinlock_lock(spinlock_t *spinlock) {
-  while (atomic_exchange_explicit(spinlock, true, memory_order_acquire)) {
+  while (atomic_flag_test_and_set_explicit(spinlock, memory_order_acquire)) {
   }
 }
 
 void spinlock_unlock(spinlock_t *spinlock) {
-  atomic_store_explicit(spinlock, false, memory_order_release);
+  atomic_flag_clear_explicit(spinlock, memory_order_release);
 }
 
-spinlock_t spinlock;
+spinlock_t spinlock = ATOMIC_FLAG_INIT;
 int s_data_1;
 int s_data_2;
 
@@ -41,7 +39,6 @@ void *thread_2(void *unused) {
 
 int main() {
   pthread_t t1, t2;
-  spinlock_init(&spinlock);
 
   if (pthread_create(&t1, NULL, thread_1, NULL))
     abort();
