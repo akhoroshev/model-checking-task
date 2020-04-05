@@ -1,0 +1,3 @@
+[submodule "genmc"]
+	path = genmc
+	url = https://github.com/MPI-SWS/genmc.git
