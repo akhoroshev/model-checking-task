@@ -1,4 +1,5 @@
-cd cppspinlock
+DIRECTORY=`dirname $0`
+cd $DIRECTORY/cppspinlock
 mkdir build
 cd build
 cmake ..
